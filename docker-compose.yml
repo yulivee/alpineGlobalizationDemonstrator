@@ -1,0 +1,23 @@
+services:
+  weather:
+    build:
+      context: .
+    container_name: weather-service
+    image: weather-service:0.1.0
+    networks:
+      - weather-nw
+    depends_on:
+      - database
+
+  database:
+    container_name: weather-db
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    networks:
+      - weather-nw
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=${SQL_SERVER_PW}
+
+networks:
+  weather-nw:
+    name: weather-nw
